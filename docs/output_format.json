@@ -1,0 +1,49 @@
+{
+    "user_id":{
+        "session_id":{
+            "message_id":{
+                "input_guardrails":{
+                    "toxicity":{
+                        "toxicity":"bool", 
+                        "severe_toxicity":"bool", 
+                        "obscene":"bool", 
+                        "threat":"bool", 
+                        "insult":"bool",
+                        "sexual_explicit":"bool"
+                    },
+                    "bias":{
+                        "identity_attack" : "float"
+                    },
+                    "privacy":{
+                        "pii_detected" : "bool",
+                        "secrets": "bool"
+                        
+                    },
+                    "prompt_attack":{
+                        "prompt_injection":{"code":"bool","sqli":"bool","template":"bool","xss":"bool","ascii":"bool","other":"bool"},
+                        "jailbreak":"bool"
+
+                    },
+                    "topic_relevance":{
+                        "topic_relevance":"bool"
+                    }
+                    
+                },
+                "output_guardrails":{
+                    "alignment":{"observation":"str","thought":"str","result":"bool"},
+                    "code_safety":{"description":"str","severity":"str","line":"str","result":"bool"},
+                    "formatting":{
+                        "valid_json":"bool",
+                        "valid_sql":"bool",
+                        "valid_cli":"bool"
+                    }
+
+
+                },
+                "model_safety":{ 
+                    "confidence_score":"float"
+                }
+            }
+        }
+    }
+}

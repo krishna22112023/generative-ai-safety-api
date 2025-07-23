@@ -1,0 +1,24 @@
+{
+    "input_guardrails":{
+        "toxicity":{
+            "labels" : ["severe_toxicity","toxicity","obscene","threat","insult","sexual_explicit"],
+            "threshold" : 0.5, 
+            "validation_method" : "full", 
+            "on_fail" : "noop" 
+        },
+        "bias":{
+            "labels" : ["identity_attack"],
+            "threshold" : 0.5, 
+            "validation_method" : "full", 
+            "on_fail" : "noop" 
+        },
+        "pii":{
+            "labels" : ["EMAIL_ADDRESS","PHONE_NUMBER","IP_ADDRESS","LOCATION","PERSON","SG_NRIC_FIN","SG_UEN","URL"],
+            "on_fail" : "noop" 
+        },
+        "secrets":{
+            "labels" : ["USER_ID","PASSWORD","API_KEY","ENCRYPTION_KEY"],
+            "on_fail" : "noop" 
+        }
+    }
+}
