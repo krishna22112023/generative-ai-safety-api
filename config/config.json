@@ -7,10 +7,7 @@
             "on_fail" : "noop" 
         },
         "bias":{
-            "labels" : ["identity_attack"],
-            "threshold" : 0.5, 
-            "validation_method" : "full", 
-            "on_fail" : "noop" 
+            "labels" : ["physical","socioeconomic","gender","racial","age"]
         },
         "pii":{
             "labels" : ["EMAIL_ADDRESS","PHONE_NUMBER","IP_ADDRESS","LOCATION","PERSON","SG_NRIC_FIN","SG_UEN","URL"],
@@ -19,6 +16,9 @@
         "secrets":{
             "labels" : ["USER_ID","PASSWORD","API_KEY","ENCRYPTION_KEY"],
             "on_fail" : "noop" 
+        },
+        "prompt_safety":{
+            "labels" : ["adversarial","direct_prompt_injection","jailbreaking"]
         }
     }
 }
