@@ -19,6 +19,9 @@
         },
         "prompt_safety":{
             "labels" : ["adversarial","direct_prompt_injection","jailbreaking"]
+        },
+        "allignment":{
+            "types" : ["controllability","interpretability","ethics","robustness"]
         }
     }
 }

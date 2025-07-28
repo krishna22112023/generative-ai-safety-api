@@ -27,5 +27,11 @@ dependencies = [
     "uvicorn>=0.35.0",
     "detect-secrets",
     "groq",
-    "semantic-router"
+    "semantic-router",
+    "tqdm",
+    "dspy-ai",
+    "instructor",
+    "openai",
+    "verdict",
+    "datasets"
 ]
