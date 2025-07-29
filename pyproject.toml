@@ -33,5 +33,11 @@ dependencies = [
     "instructor",
     "openai",
     "verdict",
-    "datasets"
+    "datasets",
+    "codeshield",
+    "langchain-community>=0.3.19",
+    "langchain-experimental>=0.3.4",
+    "langchain-openai>=0.3.8",
+    "langgraph>=0.3.5",
+    
 ]

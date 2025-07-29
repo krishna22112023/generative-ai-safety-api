@@ -1,0 +1,12 @@
+{
+    "llm": {
+        "model": "gpt-4o",
+        "base_url": "https://api.openai.com/v1"
+    },
+    "tools": {
+        "tavily": {
+            "name": "tavily_search",
+            "max_results": 5
+        }
+    }
+}
