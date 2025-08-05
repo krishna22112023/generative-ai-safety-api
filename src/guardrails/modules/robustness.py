@@ -1,6 +1,7 @@
 """
 This module implements automated adversarial attacks on a target LLM using dspy
 This code is borrowed from https://github.com/haizelabs/dspy-redteam and modified to fit our needs.
+This module will not be used as input or output guardrails, but only used before agent deployment.
 """
 import dspy
 import instructor

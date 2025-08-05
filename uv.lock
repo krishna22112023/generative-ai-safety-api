@@ -906,6 +906,7 @@ dependencies = [
     { name = "gliner" },
     { name = "groq" },
     { name = "guardrails-ai" },
+    { name = "httpx" },
     { name = "instructor" },
     { name = "langchain-community" },
     { name = "langchain-experimental" },
@@ -923,6 +924,7 @@ dependencies = [
     { name = "python-dotenv" },
     { name = "semantic-router" },
     { name = "sqlalchemy" },
+    { name = "sse-starlette" },
     { name = "tenacity" },
     { name = "torch" },
     { name = "tqdm" },
@@ -933,6 +935,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
+    { name = "alembic" },
     { name = "alembic", specifier = ">=1.16.4" },
     { name = "captum", specifier = ">=0.8.0" },
     { name = "codeshield" },
@@ -943,7 +946,8 @@ requires-dist = [
     { name = "fastapi", specifier = ">=0.116.1" },
     { name = "gliner", specifier = ">=0.2.21" },
     { name = "groq" },
-    { name = "guardrails-ai", specifier = ">=0.5.15" },
+    { name = "guardrails-ai", specifier = ">=0.4.2" },
+    { name = "httpx", specifier = ">=0.27.0" },
     { name = "instructor" },
     { name = "langchain-community", specifier = ">=0.3.19" },
     { name = "langchain-experimental", specifier = ">=0.3.4" },
@@ -961,6 +965,7 @@ requires-dist = [
     { name = "python-dotenv", specifier = ">=1.1.1" },
     { name = "semantic-router" },
     { name = "sqlalchemy", specifier = ">=2.0.41" },
+    { name = "sse-starlette" },
     { name = "tenacity", specifier = ">=9.1.2" },
     { name = "torch", specifier = ">=2.7.1" },
     { name = "tqdm" },
@@ -3555,6 +3560,18 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/70/a2/f642334db0cabd187fa86b8773257ee6993c6009338a6831d4804e2c5b3c/srsly-2.5.1-cp313-cp313-musllinux_1_2_aarch64.whl", hash = "sha256:6e57b8138082f09e35db60f99757e16652489e9e3692471d8e0c39aa95180688", size = 1086098, upload-time = "2025-01-17T09:26:05.612Z" },
     { url = "https://files.pythonhosted.org/packages/0d/9b/be48e185c5a010e71b5135e4cdf317ff56b8ac4bc08f394bbf882ac13b05/srsly-2.5.1-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:bab90b85a63a1fe0bbc74d373c8bb9bb0499ddfa89075e0ebe8d670f12d04691", size = 1100354, upload-time = "2025-01-17T09:26:07.215Z" },
     { url = "https://files.pythonhosted.org/packages/3a/e2/745aeba88a8513017fbac2fd2f9f07b8a36065e51695f818541eb795ec0c/srsly-2.5.1-cp313-cp313-win_amd64.whl", hash = "sha256:e73712be1634b5e1de6f81c273a7d47fe091ad3c79dc779c03d3416a5c117cee", size = 630634, upload-time = "2025-01-17T09:26:10.018Z" },
+]
+
+[[package]]
+name = "sse-starlette"
+version = "3.0.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "anyio" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/42/6f/22ed6e33f8a9e76ca0a412405f31abb844b779d52c5f96660766edcd737c/sse_starlette-3.0.2.tar.gz", hash = "sha256:ccd60b5765ebb3584d0de2d7a6e4f745672581de4f5005ab31c3a25d10b52b3a", size = 20985, upload-time = "2025-07-27T09:07:44.565Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ef/10/c78f463b4ef22eef8491f218f692be838282cd65480f6e423d7730dfd1fb/sse_starlette-3.0.2-py3-none-any.whl", hash = "sha256:16b7cbfddbcd4eaca11f7b586f3b8a080f1afe952c15813455b162edea619e5a", size = 11297, upload-time = "2025-07-27T09:07:43.268Z" },
 ]
 
 [[package]]

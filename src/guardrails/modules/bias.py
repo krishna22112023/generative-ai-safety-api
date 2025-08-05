@@ -5,7 +5,7 @@ from pathlib import Path
 import sys
 import pyprojroot
 import logging
-from typing import Dict, List
+from typing import Any, Dict, List
 from timeit import default_timer as timer
 
 from pydantic import BaseModel, Field, ValidationError
@@ -13,10 +13,10 @@ from groq import Groq
 
 root = pyprojroot.find_root(pyprojroot.has_dir("src"))
 sys.path.append(str(root))
-from config import config 
+from config import guardrail_config 
 logger = logging.getLogger(__name__)
 
-_BIAS_LABELS: List[str] = config["input_guardrails"]["bias"]["labels"] 
+_BIAS_LABELS: List[str] = guardrail_config["input_guardrails"]["bias"]["labels"] 
 
 _GROQ_CLIENT = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
@@ -39,7 +39,7 @@ class _BiasOutputModel(BaseModel):
         return cls(**flags)  # type: ignore[arg-type]
 
 
-def detect_bias(text: str, *, model: str = "llama-3.1-8b-instant", temperature: float = 0.0) -> Dict[str, bool]:
+def detect_bias(text: str, *, model: str = "llama-3.1-8b-instant", temperature: float = 0.0) -> Dict[str, Any]:
     """Detect bias types in *text* using Groq LLM.
 
     Parameters
@@ -76,7 +76,7 @@ def detect_bias(text: str, *, model: str = "llama-3.1-8b-instant", temperature: 
     raw_content = completion.choices[0].message.content.strip()
     logger.info(f"bias detection time: {end_time - start_time} seconds")
     logger.info(f"bias detection result: {raw_content}")
-
+    
     parsed_json: dict
     try:
         parsed_json = json.loads(raw_content)
@@ -89,13 +89,17 @@ def detect_bias(text: str, *, model: str = "llama-3.1-8b-instant", temperature: 
             raise ValueError(
                 "Groq response could not be parsed as JSON:", raw_content
             ) from exc
-
     try:
-        bias_output = _BiasOutputModel.from_llm_json(parsed_json)
+        bias_output_model = _BiasOutputModel.from_llm_json(parsed_json)
     except ValidationError as exc:  # pragma: no cover
         raise RuntimeError("Unexpected fields in LLM response") from exc
 
-    return bias_output.dict()
+    # Build standardized response
+    return {
+        "result": bias_output_model.model_dump(),
+        "reason": {"explanation": parsed_json.get("reason", "")},
+        "run_time": end_time - start_time,
+    }
 
 if __name__ == "__main__":
     text = "i think i lean right on the political spectrum"

@@ -2,7 +2,7 @@ import logging
 import re
 import sys
 import os
-from typing import Dict, List
+from typing import Any, Dict, List
 from timeit import default_timer as timer
 import pyprojroot
 from guardrails.hub import GuardrailsPII
@@ -11,45 +11,47 @@ from guardrails import Guard
 root = pyprojroot.find_root(pyprojroot.has_dir("src"))
 sys.path.append(str(root))
 from utils.helper import parse_regex, detect_secrets_regex
-from config import config
+from config import guardrail_config
 
 logger = logging.getLogger(__name__)
 
 
-def detect_pii(message: str) -> Dict[str, bool]:
+def detect_pii(message: str) -> Dict[str, Any]:
 
-    pii_config = config["input_guardrails"]["pii"]
+    pii_config = guardrail_config["input_guardrails"]["pii"]
 
     guard = Guard().use(
     GuardrailsPII,
-    entities=pii_config["labels"],
-    on_fail=pii_config["on_fail"]
+    entities=pii_config["labels"]
     )
-    logger.info(f"pii guardrail initialized with entities : {pii_config['labels']} and action taken on failure : {pii_config['on_fail']}")
+    logger.info(f"pii guardrail initialized with entities : {pii_config['labels']}")
 
     start_time = timer()
     result = guard.validate(str(message))
     end_time = timer()
-    logger.info(f"Done, inference time: {end_time - start_time} seconds")
+    logger.info("Done, inference time: %s seconds", end_time - start_time)
 
     pii_labels = pii_config["labels"]
-    if result.validation_passed:
-        return {label: 0 for label in pii_labels}
-    else:
-        label_flags: Dict[str, int] = {label: 0 for label in pii_labels}
+    label_flags: Dict[str, int] = {label: 0 for label in pii_labels}
+
+    if not result.validation_passed:
         error_spans = result.validation_summaries[0].error_spans
-        for label in pii_labels:
-            for error_span in error_spans:
-                if label == error_span.reason:
-                    label_flags[label] += 1
+        for error_span in error_spans:
+            reason_label = getattr(error_span, "reason", "")
+            if reason_label in label_flags:
+                label_flags[reason_label] += 1
 
-        return label_flags
+    return {
+        "result": label_flags,
+        "reason": {},
+        "run_time": end_time - start_time,
+    }
 
 
-def detect_secrets(message: str) -> Dict[str, int]:
+def detect_secrets(message: str) -> Dict[str, Any]:
     """Detect secret patterns using comprehensive regular expressions."""
 
-    secrets_config = config["input_guardrails"]["secrets"]
+    secrets_config = guardrail_config["input_guardrails"]["secrets"]
     labels: List[str] = secrets_config["labels"]
 
     start_time = timer()
@@ -60,7 +62,11 @@ def detect_secrets(message: str) -> Dict[str, int]:
     end_time = timer()
     logger.info("Secret detection completed in %s seconds", end_time - start_time)
 
-    return label_flags
+    return {
+        "result": label_flags,
+        "reason": {},
+        "run_time": end_time - start_time,
+    }
 
 
 if __name__ == "__main__":

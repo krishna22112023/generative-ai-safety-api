@@ -242,6 +242,5 @@ def detect_secrets_regex(text: str, labels: List[str]) -> Dict[str, int]:
 
     return counts
 
-# ----------------------------------------------------------------------
 
 

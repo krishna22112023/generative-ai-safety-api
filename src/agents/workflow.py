@@ -4,6 +4,7 @@ import pyprojroot
 root = pyprojroot.find_root(pyprojroot.has_dir("src"))
 sys.path.append(str(root))
 from src.agents.builder import build_graph
+from langchain_core.messages import HumanMessage
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +28,7 @@ def run_agent_workflow(user_input: str):
     logger.info(f"Starting workflow with user input: {user_input}")
     result = graph.invoke(
         {
-            "messages": [{"role": "user", "content": user_input}],
+            "messages": [HumanMessage(content=user_input)],
         }
     )
     logger.debug(f"Final workflow state: {result}")

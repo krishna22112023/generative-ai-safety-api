@@ -10,7 +10,7 @@ dependencies = [
     "detoxify>=0.5.2",
     "fastapi>=0.116.1",
     "gliner>=0.2.21",
-    "guardrails-ai>=0.5.15",
+    "guardrails-ai>=0.4.2",
     "llamafirewall>=0.0.4",
     "nltk>=3.8.1",
     "presidio-analyzer>=2.2.359",
@@ -39,5 +39,7 @@ dependencies = [
     "langchain-experimental>=0.3.4",
     "langchain-openai>=0.3.8",
     "langgraph>=0.3.5",
-    
+    "sse_starlette",
+    "httpx>=0.27.0",
+    "alembic"
 ]

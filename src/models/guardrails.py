@@ -1,19 +1,17 @@
 from sqlalchemy import Column, String, DateTime, Boolean, JSON
-from app.db.base import Base
+from src.db.base import Base
 
 class Guardrail(Base):
-    __tablename__ = "guardrails_result"
+    __tablename__ = "guardrails_response"
 
-    user_id = Column(String, primary_key=True, index=True)
-    session_id = Column(String, index=True)
-    message_id = Column(String, index=True)
-    timestamp = Column(DateTime, index=True)
+    user_id = Column(String, primary_key=True, index=True, unique=True, nullable=False)
+    session_id = Column(String, index=True,nullable=False)
+    message_id = Column(String, nullable=True)
     toxicity = Column(JSON)
     bias = Column(JSON)
-    privacy = Column(JSON)
-    prompt_attack = Column(JSON)
-    topic_relevance = Column(Boolean)
-    alignment = Column(JSON)
-    code_safety = Column(JSON)
-    formatting = Column(JSON)
-    model_explainability = Column(JSON)
+    ethics = Column(JSON)
+    pii = Column(JSON)
+    secrets = Column(JSON)
+    prompt_safety = Column(JSON)
+    tool_alignment = Column(JSON)
+    code_shield = Column(JSON)

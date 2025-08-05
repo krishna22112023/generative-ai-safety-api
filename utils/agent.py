@@ -9,6 +9,7 @@ import pyprojroot
 
 from langchain_core.prompts import PromptTemplate
 from langgraph.prebuilt.chat_agent_executor import AgentState
+from langchain_core.messages import SystemMessage
 
 root = pyprojroot.find_root(pyprojroot.has_dir("src"))
 sys.path.append(str(root))
@@ -103,4 +104,4 @@ def apply_prompt_template(prompt_name: str, state: AgentState) -> list:
         input_variables=["CURRENT_TIME"],
         template=get_prompt_template(prompt_name),
     ).format(CURRENT_TIME=datetime.now().strftime("%a %b %d %Y %H:%M:%S %z"),**state)
-    return [{"role": "system", "content": system_prompt}] + state["messages"]
+    return [SystemMessage(content=system_prompt)] + state["messages"]
