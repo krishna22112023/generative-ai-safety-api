@@ -1,75 +1,74 @@
-# Guardrails for AI safety and reliability
+<p align="center">
+  <img src="assets/logo.png" alt="Logo" width="180"/>
+  <h1 align="center">Guardrails for AI Safety and Reliability</h1>
+  <a href="https://www.python.org/downloads/release/python-3120/">
+    <img src="https://img.shields.io/badge/Python-3.12-blue?logo=python" alt="Python 3.12">
+  </a>
+  <a href="https://github.com/astral-sh/uv">
+    <img src="https://img.shields.io/badge/uv-Package_Manager-6e40c9?logo=rust" alt="uv package manager">
+  </a>
+  <a href="https://fastapi.tiangolo.com/">
+    <img src="https://img.shields.io/badge/FastAPI-Framework-009688?logo=fastapi" alt="FastAPI">
+  </a>
+  <a href="https://www.postgresql.org/about/news/postgresql-175-released-2770/">
+    <img src="https://img.shields.io/badge/Postgres-17.5-336791?logo=postgresql" alt="Postgres 17.5">
+  </a>
+</p>
 
 Guardrails for AI Safety and Reliability is a modular API designed to help teams implement AI safety best practices out-of-the-box. This project provides a unified interface for running safety and reliability checks on generative AI outputs, making it easy to integrate robust guardrails into any in-house GenAI product.
 
 **Key Features:**
-- **Plug-and-play API:** Easily connect the guardrail API to any generative AI system you develop, regardless of model or platform.
-- **Comprehensive Safety Checks:** Automatically screen for toxicity, bias, PII (personally identifiable information), and secret leakage using state-of-the-art tools and configurable rules.
-- **Production-Ready:** Run safety and reliability tests both before and during production to ensure outputs meet organizational and regulatory standards.
-- **Configurable & Extensible:** Customize guardrails and thresholds to fit your use case, and extend with new rules as needed.
+- **Plug-and-play API:** Easily connect the guardrail API to any LLM-based system you develop, regardless of model or platform.
+- **Comprehensive Safety Checks:** Automatically screen for toxicity, bias, ethics, PII, secrets, prompt safety, Tool Alignment and Code Shield
+- **Configurable & Extensible:** Customize guardrails and thresholds to fit your use case, and extend with new rules as needed. The guardrails actions can be configured to block/allow/human-in-the-loop.
 
 This project helps you ship safer, more reliable AI applications with minimal effort, so you can focus on building value while reducing risk.
 
 ![Workflow Diagram](assets/workflow.jpg)
 
-The above diagram illustrates the end-to-end workflow of the Guardrails for AI Safety and Reliability API. The process begins with the ingestion of user input which is first passed through **Input Guardrails** that perform the following checks : 
-- **Toxicity:** Detects and flags toxic, obscene, threatening, insulting, or sexually explicit language.
-- **Bias:** Identifies and scores identity-based attacks or biased content.
-- **Privacy:** Checks for the presence of personally identifiable information (PII) and secret leakage.
-- **Prompt Attack:** Detects prompt injection attempts, jailbreaks, and other adversarial manipulations.
-- **Topic Relevance:** Ensures the response is relevant to the intended topic or context.
+The above diagram illustrates the end-to-end workflow of the Guardrails for AI Safety and Reliability API. 
 
-After the model generates a response, the **Output Guardrails** perform the following checks : 
-- **Alignment:** Assesses whether the model output aligns with ethical, moral, and intended goals.
-- **Code Safety:** Checks generated code for unsafe, vulnerable, or harmful content and rates its severity.
-- **Formatting:** Validates that outputs are well-formed (e.g., valid JSON, SQL, or CLI syntax).
+**Input Guardrails**
+ - **Toxicity:** Detects and flags content that is severely toxic, generally toxic, obscene, threatening, insulting, or sexually explicit, using a configurable threshold and validation method.
+  - **Bias:** Identifies and scores content for physical, socioeconomic, gender, racial, or age-related bias to help mitigate discriminatory outputs.
+  - **Ethics:** Screens for ethical concerns across multiple frameworks, including consequentialist, deontological, virtue ethics, care ethics, and social justice ethics.
+  - **PII (Personally Identifiable Information):** Checks for the presence of sensitive information such as email addresses, phone numbers, IP addresses, locations, personal names, Singapore NRIC/FIN, UEN, and URLs to prevent privacy leaks.
+  - **Secrets:** Detects accidental leakage of confidential data such as user IDs, passwords, API keys, and encryption keys.
+  - **Prompt Safety:** Identifies adversarial prompts, direct prompt injection attempts, and jailbreak techniques to defend against prompt-based attacks.
 
 
-## Setup
+**Output Guardrails**
+  - **Tool Alignment (Output):** Assesses whether the agent's tool usage and reasoning are properly aligned with the user's intended objective.
+  - **Code Shield (Output):** Evaluates generated code for the use of unsafe, unauthorized, or potentially harmful code patterns.
 
-To set up the [uv](https://github.com/astral-sh/uv) package manager, follow these steps:
+## Guardrails dependencies
 
-1. **Install uv**
+- gliner
+- Presidio-analyzer
+- Llama-firewall
+- detoxify
+- regex
+- Aurelio semantic_router
 
-   You can install `uv` using the recommended method for your operating system.
 
-   - **On Linux/macOS (using shell):**
-     ```sh
-     curl -Ls https://astral.sh/uv/install.sh | sh
-     ```
-     This will download and install the latest version of `uv` to `~/.cargo/bin/uv` or another location in your `$PATH`.
+## Install 
 
-   - **On Windows (using PowerShell):**
-     ```powershell
-     iwr https://astral.sh/uv/install.ps1 -useb | iex
-     ```
+To setup environment,install dependencies and create empty db tables, clone the repo, cd into the root folder and run : 
 
-   - **Alternatively, with pipx:**
-     ```sh
-     pipx install uv
-     ```
+```
+pip install -e .
+```
 
-2. **Verify the installation**
+## Launch servers
 
-   After installation, check that `uv` is available:
-   ```sh
-   uv --version
-   ```
+To launch the input and output guardrails API servers (and a simple langgraph agent server) please run : 
 
-3. **(Optional) Add uv to your PATH**
+```
+uv run server.py
+```
 
-   If the `uv` command is not found, ensure that the installation directory (e.g., `~/.cargo/bin` or the directory shown in the install output) is in your system's `PATH`.
+You should see three servers running : 
+- Agent : http://0.0.0.0:8000, 
+- Input guardrails : http://0.0.0.0:8001
+- Output guardrails : http://0.0.0.0:8002
 
-4. **Use uv to manage dependencies**
-
-   - To install dependencies from `pyproject.toml`:
-     ```sh
-     uv pip install --require-locked
-     ```
-
-   - To create a lockfile:
-     ```sh
-     uv pip compile pyproject.toml
-     ```
-
-   - For more commands and usage, see the [uv documentation](https://github.com/astral-sh/uv).

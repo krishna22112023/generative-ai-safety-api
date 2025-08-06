@@ -26,9 +26,6 @@
     "output_guardrails":{
         "tool_alignment":{
             "action" : "noop"
-        },
-        "code_shield":{
-            "action" : "noop"
         }
     }
 }

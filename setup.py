@@ -73,6 +73,13 @@ def install_guardrail_validators(uv_exe: str) -> None:
         subprocess.run([uv_exe, "run", "guardrails", "hub", "install", v], check=True)
 
 
+def run_alembic_migrations(uv_exe: str) -> None:
+    """Run Alembic migrations to prepare the database schema."""
+    print("[setup] Running Alembic migrations …")
+    # Ensure we are in the project root where *alembic.ini* resides.
+    subprocess.run([uv_exe, "run", "alembic", "upgrade", "head"], check=True)
+
+
 # ---------------------------------------------------------------------------
 # Custom develop command that triggers the bootstrap logic above
 # ---------------------------------------------------------------------------
@@ -91,6 +98,7 @@ class BootstrapDevelop(develop):
         uv_exe = uv_bin(venv_dir)
         install_project_deps(uv_exe)
         install_guardrail_validators(uv_exe)
+        run_alembic_migrations(uv_exe)
         print("[setup] All done – environment ready! 🎉")
 
 

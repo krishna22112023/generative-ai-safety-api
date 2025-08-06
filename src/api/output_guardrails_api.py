@@ -37,9 +37,7 @@ class OutputGuardrailResponse(BaseModel):
 @app.post("/api/output_guardrails", response_model=OutputGuardrailResponse)
 async def run_output_guardrails(request: OutputGuardrailRequest, db: Session = Depends(get_db)):
     try:
-        # Run potentially blocking / asyncio-incompatible code in a worker thread
-        results, flagged, blocked = await asyncio.to_thread(
-            evaluate_and_store,
+        results, flagged, blocked = evaluate_and_store(
             db,
             user_id=request.user_id,
             session_id=request.session_id,
